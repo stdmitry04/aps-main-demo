@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Entra ID SSO Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .button {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .button-primary {
+            background: #0078d4;
+            color: white;
+        }
+
+        .button-primary:hover:not(:disabled) {
+            background: #006cbd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 120, 212, 0.4);
+        }
+
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .status-box {
+            margin: 20px 0;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .status-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            color: #0d47a1;
+        }
+
+        .status-success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #1b5e20;
+        }
+
+        .status-error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #b71c1c;
+        }
+
+        .user-info {
+            background: #f5f5f5;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+
+        .user-info h3 {
+            margin-bottom: 12px;
+            color: #333;
+            font-size: 18px;
+        }
+
+        .user-info p {
+            margin: 8px 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .user-info strong {
+            color: #333;
+        }
+
+        .groups {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .group-badge {
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .microsoft-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .config-info {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #856404;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔐 SSO Test Page</h1>
+        <p class="subtitle">Test Azure Entra ID SSO Integration</p>
+
+        <div id="config-status" class="config-info">
+            <strong>⚙️ Configuration:</strong> Checking...
+        </div>
+
+        <div id="status"></div>
+
+        <button id="sso-button" class="button button-primary" onclick="loginWithSSO()">
+            <svg class="microsoft-icon" viewBox="0 0 21 21">
+                <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+                <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+                <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+                <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
+            </svg>
+            <span id="button-text">Sign in with Microsoft</span>
+        </button>
+
+        <div id="user-info"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api/auth';
+
+        // Check SSO configuration on page load
+        async function checkConfig() {
+            try {
+                const response = await fetch(`${API_BASE}/sso/metadata/`);
+                const data = await response.json();
+
+                const configDiv = document.getElementById('config-status');
+
+                if (data.enabled) {
+                    configDiv.innerHTML = `
+                        <strong>✅ SSO Enabled</strong><br>
+                        <small>Tenant: <code>${data.tenant_id}</code></small><br>
+                        <small>Client: <code>${data.client_id}</code></small>
+                    `;
+                    configDiv.className = 'status-box status-success';
+                } else {
+                    configDiv.innerHTML = `
+                        <strong>❌ SSO Not Enabled</strong><br>
+                        <small>Set <code>ENTRA_ENABLED=True</code> in your .env file</small>
+                    `;
+                    configDiv.className = 'status-box status-error';
+                    document.getElementById('sso-button').disabled = true;
+                }
+            } catch (error) {
+                document.getElementById('config-status').innerHTML = `
+                    <strong>⚠️ Cannot reach backend</strong><br>
+                    <small>Make sure Django server is running on port 8000</small>
+                `;
+                document.getElementById('config-status').className = 'status-box status-error';
+                document.getElementById('sso-button').disabled = true;
+            }
+        }
+
+        // Initiate SSO login
+        async function loginWithSSO() {
+            const button = document.getElementById('sso-button');
+            const buttonText = document.getElementById('button-text');
+            const statusDiv = document.getElementById('status');
+
+            // Disable button and show loading
+            button.disabled = true;
+            buttonText.textContent = 'Redirecting...';
+            button.innerHTML = `
+                <div class="spinner"></div>
+                <span>Redirecting to Microsoft...</span>
+            `;
+
+            statusDiv.innerHTML = `
+                <div class="status-box status-info">
+                    <strong>🚀 Initiating SSO...</strong><br>
+                    Requesting authorization URL from backend...
+                </div>
+            `;
+
+            try {
+                // Get authorization URL from backend
+                const response = await fetch(`${API_BASE}/sso/login/`);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+
+                if (data.authorization_url) {
+                    statusDiv.innerHTML = `
+                        <div class="status-box status-success">
+                            <strong>✅ Redirecting to Microsoft...</strong><br>
+                            You will be redirected to sign in with your organization account.
+                        </div>
+                    `;
+
+                    // Save current page for return
+                    sessionStorage.setItem('sso_test_page', 'true');
+
+                    // Redirect to Microsoft login
+                    setTimeout(() => {
+                        window.location.href = data.authorization_url;
+                    }, 1000);
+                } else {
+                    throw new Error('No authorization URL received from backend');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div class="status-box status-error">
+                        <strong>❌ Error:</strong> ${error.message}
+                    </div>
+                `;
+
+                // Re-enable button
+                button.disabled = false;
+                button.innerHTML = `
+                    <svg class="microsoft-icon" viewBox="0 0 21 21">
+                        <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+                        <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+                        <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+                        <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+                    </svg>
+                    <span>Sign in with Microsoft</span>
+                `;
+            }
+        }
+
+        // Check if we're returning from SSO callback
+        async function checkCallback() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const error = urlParams.get('error');
+
+            if (error) {
+                document.getElementById('status').innerHTML = `
+                    <div class="status-box status-error">
+                        <strong>❌ Authentication Error:</strong><br>
+                        ${urlParams.get('error_description') || error}
+                    </div>
+                `;
+                return;
+            }
+
+            if (code && sessionStorage.getItem('sso_test_page')) {
+                document.getElementById('status').innerHTML = `
+                    <div class="status-box status-info">
+                        <strong>🔄 Processing authentication...</strong><br>
+                        Exchanging authorization code for tokens...
+                    </div>
+                `;
+
+                try {
+                    const response = await fetch(`${API_BASE}/sso/callback/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ code })
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Authentication failed');
+                    }
+
+                    const data = await response.json();
+
+                    // Display success
+                    document.getElementById('status').innerHTML = `
+                        <div class="status-box status-success">
+                            <strong>✅ Successfully authenticated!</strong><br>
+                            Access token received and user profile loaded.
+                        </div>
+                    `;
+
+                    // Display user info
+                    displayUserInfo(data);
+
+                    // Hide login button
+                    document.getElementById('sso-button').style.display = 'none';
+
+                    // Clear session storage
+                    sessionStorage.removeItem('sso_test_page');
+
+                    // Clean URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+
+                } catch (error) {
+                    document.getElementById('status').innerHTML = `
+                        <div class="status-box status-error">
+                            <strong>❌ Authentication failed:</strong><br>
+                            ${error.message}
+                        </div>
+                    `;
+                    sessionStorage.removeItem('sso_test_page');
+                }
+            }
+        }
+
+        // Display user information
+        function displayUserInfo(data) {
+            const userInfoDiv = document.getElementById('user-info');
+            const user = data.user;
+
+            const groupsHtml = user.ad_groups && user.ad_groups.length > 0
+                ? `<div class="groups">
+                    ${user.ad_groups.map(g => `<span class="group-badge">${g}</span>`).join('')}
+                   </div>`
+                : '<em>No groups</em>';
+
+            userInfoDiv.innerHTML = `
+                <div class="user-info">
+                    <h3>👤 User Profile</h3>
+                    <p><strong>Email:</strong> ${user.email}</p>
+                    <p><strong>Name:</strong> ${user.first_name} ${user.last_name}</p>
+                    <p><strong>Entra ID:</strong> <code>${user.entra_id || 'N/A'}</code></p>
+                    <p><strong>AD Groups:</strong></p>
+                    ${groupsHtml}
+                    <p style="margin-top: 12px;"><strong>Tokens received:</strong></p>
+                    <p><small>✅ Access Token</small></p>
+                    <p><small>✅ Refresh Token</small></p>
+                </div>
+            `;
+        }
+
+        // Run on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkConfig();
+            checkCallback();
+        });
+    </script>
+</body>
+
+</html>

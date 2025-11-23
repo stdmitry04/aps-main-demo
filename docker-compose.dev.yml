@@ -1,0 +1,60 @@
+services:
+  db:
+    image: postgres:16
+    container_name: k12-postgres
+    environment:
+      POSTGRES_DB: k12erp
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d k12erp" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./server
+    container_name: k12-backend
+    command: sh -c "python manage.py migrate && uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --reload"
+    volumes:
+      - ./server:/app
+    ports:
+      - "8000:8000"
+      - "5678:5678" # debugpy port for remote debugging
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_NAME=k12erp
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DEBUG=True
+      - SECRET_KEY=docker-secret-key-change-in-production
+      - DJANGO_SETTINGS_MODULE=config.settings.development
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+      - ENABLE_REMOTE_DEBUG=True # Enable remote debugging
+
+  frontend:
+    build: ./frontend
+    container_name: k12-frontend
+    command: npm run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:

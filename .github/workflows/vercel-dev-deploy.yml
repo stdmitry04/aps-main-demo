@@ -1,0 +1,37 @@
+name: Build and Deploy (dev branch)
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:  # allow manual run from Actions tab
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      # Optional: Run tests before deployment
+      # - name: Run tests
+      #   run: npm test
+
+      - name: Trigger Vercel deployment
+        run: |
+          curl -X POST "$VERCEL_DEPLOY_HOOK_URL?target=dev"
+        env:
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEV_DEPLOY_HOOK_URL }}

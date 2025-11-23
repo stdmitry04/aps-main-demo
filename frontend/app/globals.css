@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --foreground-rgb: 0, 0, 0;
+    --background-rgb: 255, 255, 255;
+
+    /* Blue Theme Colors*/
+    --accent-50: 239, 246, 255;
+    /* lightest blue */
+    --accent-100: 219, 234, 254;
+    --accent-200: 191, 219, 254;
+    --accent-300: 147, 197, 253;
+    --accent-400: 96, 165, 250;
+    --accent-500: 59, 130, 246;
+    /* main blue */
+    --accent-600: 37, 99, 235;
+    --accent-700: 29, 78, 216;
+    --accent-800: 30, 64, 175;
+    --accent-900: 30, 58, 138;
+    /* darkest blue */
+    --accent-950: 23, 37, 84;
+    /* very dark blue */
+
+    /* Semantic color mappings */
+    --color-primary: var(--accent-500);
+    --color-primary-hover: var(--accent-600);
+    --color-primary-light: var(--accent-100);
+    --color-primary-dark: var(--accent-700);
+}
+
+body {
+    color: rgb(var(--foreground-rgb));
+}
+
+/* Utility classes for theme colors */
+.text-accent {
+    color: rgb(var(--accent-500));
+}
+
+.bg-accent {
+    background-color: rgb(var(--accent-500));
+}
+
+.border-accent {
+    border-color: rgb(var(--accent-500));
+}
+
+.text-accent-hover:hover {
+    color: rgb(var(--accent-600));
+}
+
+.bg-accent-hover:hover {
+    background-color: rgb(var(--accent-600));
+}

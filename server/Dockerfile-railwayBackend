@@ -1,0 +1,51 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y postgresql-client && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install Python packages directly (matching requirements.txt)
+RUN pip install --no-cache-dir \
+    Django==5.2 \
+    djangorestframework==3.15.2 \
+    djangorestframework-simplejwt==5.3.1 \
+    adrf==0.1.10 \
+    django-cors-headers==4.3.1 \
+    psycopg2-binary==2.9.10 \
+    django-filter==24.2 \
+    Pillow==10.4.0 \
+    python-dotenv==1.0.0 \
+    python-decouple==3.8 \
+    gunicorn==21.2.0 \
+    uvicorn[standard]==0.30.6 \
+    whitenoise==6.6.0 \
+    dj-database-url==2.0.0 \
+    msal==1.31.0 \
+    msgraph-sdk==1.12.0 \
+    azure-identity==1.19.0 \
+    pydantic==2.9.2 \
+    email-validator==2.1.0 \
+    debugpy==1.8.0 \
+    python-dateutil==2.8.2 \
+    pytz==2023.3 \
+    drf-spectacular==0.26.5
+
+# Copy from server directory (since build context is project root)
+COPY server/ .
+
+# Debug: List what was copied
+RUN ls -la /app && echo "--- Checking for manage.py ---" && ls -la /app/manage.py || echo "manage.py NOT FOUND"
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV DJANGO_SETTINGS_MODULE=config.settings.production
+ENV PORT=8000
+
+# Run migrations, collect static, seed demo data, and start Uvicorn with ASGI support
+# TEMPORARY: Includes seed script - remove after running once!
+CMD sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && python seed_demo_data.py --clear && uvicorn config.asgi:application --host 0.0.0.0 --port $PORT --workers 3"
+# Original CMD (restore after seeding):
+# CMD sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && uvicorn config.asgi:application --host 0.0.0.0 --port $PORT --workers 3"
