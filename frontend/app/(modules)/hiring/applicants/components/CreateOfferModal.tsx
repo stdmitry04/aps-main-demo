@@ -90,7 +90,7 @@ export function CreateOfferModal({ applicant, onClose, onOfferCreated }: CreateO
                     expDate.setDate(expDate.getDate() + 14);
                     initial[field] = expDate.toISOString().split('T')[0];
                 }
-                else if (field === 'districtName') initial[field] = 'School District 308';
+                else if (field === 'districtName') initial[field] = 'School Demo District';
                 else if (field === 'districtAddress') initial[field] = '856 West Dundee Avenue, Oswego, IL 60543';
                 else if (field === 'hrDirectorName') initial[field] = 'Dr. Jennifer Davis';
                 else if (field === 'hrDirectorTitle') initial[field] = 'Director of Human Resources';
@@ -483,7 +483,7 @@ function OfferLetterPreview({ formData }: { formData: Record<string, string> }) 
                 <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
                     SD
                 </div>
-                <h1 className="text-2xl font-bold text-gray-900">{formData.districtName || 'School District 308'}</h1>
+                <h1 className="text-2xl font-bold text-gray-900">{formData.districtName || 'School Demo District'}</h1>
                 <p className="text-sm text-gray-600">Human Resources Department</p>
                 <p className="text-sm text-gray-600 mt-1">{formatDate(formData.offerDate)}</p>
             </div>
@@ -493,7 +493,7 @@ function OfferLetterPreview({ formData }: { formData: Record<string, string> }) 
                 <p className="font-semibold">Dear {formData.candidateName || '[Candidate Name]'},</p>
 
                 <p>
-                    We are pleased to offer you the position of <strong>{formData.positionTitle || '[Position]'}</strong> with {formData.districtName || 'School District 308'}.
+                    We are pleased to offer you the position of <strong>{formData.positionTitle || '[Position]'}</strong> with {formData.districtName || 'School Demo District'}.
                     We were impressed by your qualifications and believe you will be an excellent addition to our team.
                 </p>
 
@@ -559,7 +559,7 @@ function OfferLetterPreview({ formData }: { formData: Record<string, string> }) 
                     Sincerely,<br />
                     <strong>{formData.hrDirectorName || 'Dr. Jennifer Davis'}</strong><br />
                     {formData.hrDirectorTitle || 'Director of Human Resources'}<br />
-                    {formData.districtName || 'School District 308'}
+                    {formData.districtName || 'School Demo District'}
                 </p>
             </div>
 

@@ -63,7 +63,7 @@ export const screeningQuestionsPool: ScreeningQuestion[] = [
   },
   {
     id: 'gen-1',
-    question: 'Why are you interested in joining School District 308?',
+    question: 'Why are you interested in joining School Demo District?',
     category: 'general',
     required: true
   },

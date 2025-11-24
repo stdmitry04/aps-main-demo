@@ -33,7 +33,7 @@ export function Header() {
                             SD
                         </div>
                         <div>
-                            <h1 className="text-lg font-semibold text-gray-900">School District 308</h1>
+                            <h1 className="text-lg font-semibold text-gray-900">School Demo District</h1>
                             <p className="text-sm text-gray-500">Human Resources</p>
                         </div>
                     </div>

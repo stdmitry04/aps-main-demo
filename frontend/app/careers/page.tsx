@@ -87,7 +87,7 @@ export default function CareersPage() {
             </div>
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Join Our Team</h1>
-              <p className="text-gray-600 mt-1">School District 308 Career Opportunities</p>
+              <p className="text-gray-600 mt-1">School Demo District Career Opportunities</p>
             </div>
           </div>
 
@@ -109,7 +109,7 @@ export default function CareersPage() {
               <div>
                 <h3 className="text-green-900 font-semibold">Application Submitted Successfully!</h3>
                 <p className="text-green-800 text-sm mt-1">
-                  Thank you for your interest in joining School District 308. We've received your application and will review it shortly.
+                  Thank you for your interest in joining School Demo District. We've received your application and will review it shortly.
                   You'll receive a confirmation email within the next few minutes.
                 </p>
               </div>

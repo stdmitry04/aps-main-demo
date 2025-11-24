@@ -86,7 +86,7 @@ export function ScheduleInterviewModal({
         We look forward to speaking with you.
 
         Best regards,
-        School District 308 HR Team
+        School Demo District HR Team
       `
     });
 

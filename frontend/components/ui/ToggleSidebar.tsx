@@ -101,7 +101,7 @@ export function ToggleSidebar({
                                     SD
                                 </div>
                                 <div className="transition-opacity duration-200 delay-150">
-                                    <h2 className="text-sm font-semibold text-gray-900 whitespace-nowrap">School District 308</h2>
+                                    <h2 className="text-sm font-semibold text-gray-900 whitespace-nowrap">School Demo District</h2>
                                     <p className="text-xs text-gray-500 whitespace-nowrap">Human Resources</p>
                                 </div>
                             </div>

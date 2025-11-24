@@ -559,7 +559,7 @@ function NewOfferModal({ onClose, onSave, districts }: NewOfferModalProps) {
       // Set default values for certain fields
       if (field === 'offerDate') initial[field] = new Date().toISOString().split('T')[0];
       else if (field === 'fte') initial[field] = '1.0';
-      else if (field === 'districtName') initial[field] = 'School District 308';
+      else if (field === 'districtName') initial[field] = 'School Demo District';
       else if (field === 'districtAddress') initial[field] = '856 West Dundee Avenue, Oswego, IL 60543';
       else if (field === 'hrDirectorName') initial[field] = 'Dr. Jennifer Davis';
       else if (field === 'hrDirectorTitle') initial[field] = 'Director of Human Resources';

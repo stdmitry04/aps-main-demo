@@ -12,6 +12,6 @@ from core.views import health
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/hiring/', include('hiring.urls')),
-    # Note: onboarding module was not present in backend
+    path('api/onboarding/', include('onboarding.urls')),
     path('health/', health),
 ]

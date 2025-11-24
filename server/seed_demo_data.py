@@ -44,10 +44,10 @@ User = get_user_model()
 
 DISTRICTS = [
     {
-        'id': '2a73cea8-ddf9-4656-9c32-bf2c36320aa3',  # Fixed UUID for District 308
-        'name': 'District 308',
-        'code': 'district308',
-        'contact_email': 'superintendent@vadimapsdatatechnologies.onmicrosoft.com',
+        'id': '2a73cea8-ddf9-4656-9c32-bf2c36320aa3',  # Fixed UUID for Demo District
+        'name': 'Demo District',
+        'code': 'demodist',
+        'contact_email': 'superintendent@example-district.edu',
         'contact_phone': '555-0308',
         'address': '856 West Dundee Avenue, Oswego, IL 60543',
     },
@@ -62,7 +62,7 @@ DISTRICTS = [
 ]
 
 AD_GROUPS = [
-    # Real Entra ID groups for District 308
+    # Real Entra ID groups for Demo District
     {'name': 'School-Leadership', 'internal_group': 'admin',
         'ad_group_id': 'cafcb44c-5ac2-4910-a1bb-8998a74e8f4b'},
     {'name': 'HR-Staff', 'internal_group': 'hr',
@@ -82,9 +82,9 @@ AD_GROUPS = [
 ]
 
 USERS_PER_DISTRICT = [
-    # Real Entra ID users (only for District 308)
+    # Real Entra ID users (only for Demo District)
     {
-        'email': 'superintendent@vadimapsdatatechnologies.onmicrosoft.com',
+        'email': 'superintendent@example-district.edu',
         'first_name': 'Phillip',
         'last_name': 'Price',
         'job_title': 'Superintendent',
@@ -92,10 +92,10 @@ USERS_PER_DISTRICT = [
         'ad_group': 'School-Leadership',
         'ad_group_ids': ['cafcb44c-5ac2-4910-a1bb-8998a74e8f4b'],
         'entra_id': '2e53a6f5-e5e4-484c-a1b6-74f3e7a097a7',
-        'district_code': 'district308'
+        'district_code': 'demodist'
     },
     {
-        'email': 'hr@vadimapsdatatechnologies.onmicrosoft.com',
+        'email': 'hr@example-district.edu',
         'first_name': 'Gideon',
         'last_name': 'Goddard',
         'job_title': 'HR Director',
@@ -103,10 +103,10 @@ USERS_PER_DISTRICT = [
         'ad_group': 'HR-Staff',
         'ad_group_ids': ['54646a18-31e4-4016-956e-f7cf83bd9ebc'],
         'entra_id': '7929279d-a51b-408c-b567-1f4f42b8d8c0',
-        'district_code': 'district308'
+        'district_code': 'demodist'
     },
     {
-        'email': 'math.teacher3@vadimapsdatatechnologies.onmicrosoft.com',
+        'email': 'math.teacher3@example-district.edu',
         'first_name': 'Tyrell',
         'last_name': 'Wellick',
         'job_title': 'Math Teacher',
@@ -114,7 +114,7 @@ USERS_PER_DISTRICT = [
         'ad_group': 'Math-Teachers',
         'ad_group_ids': ['b7895f9e-fd60-4c3b-a105-de05dd854929', '5f2ae509-6d04-4894-aaa9-cac7502aec99'],
         'entra_id': 'f1ae683c-bbc7-4c58-b175-c46e8f143561',
-        'district_code': 'district308'
+        'district_code': 'demodist'
     },
 
     # Generic demo users (for all other districts)
@@ -201,7 +201,7 @@ POSITIONS = [
         'posting_days_ago': 7,
         'posting_duration_days': 45,
         'district_code': 'riverside',
-        'req_id': 'REQ-district308-20240007',
+        'req_id': 'REQ-demodist-20240007',
     },
     {
         'title': 'Riverside Special Education Coordinator',
@@ -256,7 +256,7 @@ POSITIONS = [
         'description': 'Seeking an enthusiastic and dedicated elementary school teacher...',
         'posting_days_ago': 14,
         'posting_duration_days': 30,
-        'district_code': 'district308',
+        'district_code': 'demodist',
         'req_id': 'REQ-sd308-20240006',
     },
     {
@@ -267,7 +267,7 @@ POSITIONS = [
         'description': 'Looking for a passionate math teacher to inspire students...',
         'posting_days_ago': 7,
         'posting_duration_days': 45,
-        'district_code': 'district308',
+        'district_code': 'demodist',
         'req_id': 'REQ-sd308-20240007',
     },
     {
@@ -278,7 +278,7 @@ POSITIONS = [
         'description': 'Lead our special education program and support diverse learners...',
         'posting_days_ago': 21,
         'posting_duration_days': 60,
-        'district_code': 'district308',
+        'district_code': 'demodist',
         'req_id': 'REQ-sd308-20240008',
     },
     {
@@ -289,7 +289,7 @@ POSITIONS = [
         'description': 'Organized and friendly administrative professional needed...',
         'posting_days_ago': 5,
         'posting_duration_days': 30,
-        'district_code': 'district308',
+        'district_code': 'demodist',
         'req_id': 'REQ-sd308-20240009',
     },
     {
@@ -300,7 +300,7 @@ POSITIONS = [
         'description': 'Join our substitute teacher pool for flexible opportunities...',
         'posting_days_ago': 30,
         'posting_duration_days': 90,
-        'district_code': 'district308',
+        'district_code': 'demodist',
         'req_id': 'REQ-sd308-20240010',
     },
     {
@@ -311,7 +311,7 @@ POSITIONS = [
         'description': 'Leadership position for experienced science educator...',
         'posting_days_ago': 60,
         'posting_duration_days': 45,
-        'district_code': 'district308',
+        'district_code': 'demodist',
         'req_id': 'REQ-sd308-20240011',
     },
     # Generic positions for other districts
@@ -422,7 +422,7 @@ APPLICANTS = [
 
 WORK_LOCATIONS = [
     {
-        'name': 'APS Tower',
+        'name': 'Demo Building',
         'address': '105 E Galena Blvd, Aurora, IL 60505',
         'latitude': Decimal('41.7606'),
         'longitude': Decimal('-88.3111'),
@@ -613,7 +613,7 @@ def seed_users(district, ad_mappings):
             continue
 
         # Skip generic users for districts that have specific users
-        if not user_district_code and district.code == 'district308':
+        if not user_district_code and district.code == 'demodist':
             continue
 
         email = user_data['email'].format(code=district.code)

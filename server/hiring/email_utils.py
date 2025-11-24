@@ -44,7 +44,7 @@ def create_offer_email_html(offer, accept_url, reject_url):
         message_body = f"""
         <p style="{styles['p']}">Dear {offer.application.applicant_name},</p>
 
-        <p style="{styles['p']}">We are pleased to offer you the position of <strong>{offer.application.position.title}</strong> with School District 308.</p>
+        <p style="{styles['p']}">We are pleased to offer you the position of <strong>{offer.application.position.title}</strong> with School Demo District.</p>
 
         <h2 style="{styles['h2']}">Position Details</h2>
         <div style="{styles['details_box']}">
@@ -104,12 +104,12 @@ def create_offer_email_html(offer, accept_url, reject_url):
                     Sincerely,<br>
                     <strong>Dr. Jennifer Davis</strong><br>
                     Director of Human Resources<br>
-                    School District 308
+                    School Demo District
                 </p>
             </div>
 
             <div style="{styles['footer']}">
-                <p style="margin: 5px 0;">School District 308 Human Resources</p>
+                <p style="margin: 5px 0;">School Demo District Human Resources</p>
                 <p style="margin: 5px 0;">This is an automated message, please do not reply to this email.</p>
             </div>
         </div>
@@ -139,7 +139,7 @@ def create_application_confirmation_html(application):
 
             <p style="{styles['p']}">Dear {application.applicant_name},</p>
 
-            <p style="{styles['p']}">Thank you for applying for the <strong>{application.position.title}</strong> position at School District 308.</p>
+            <p style="{styles['p']}">Thank you for applying for the <strong>{application.position.title}</strong> position at School Demo District.</p>
 
             <p style="{styles['p']}">We have received your application and will review it carefully. You will hear from us within the next 2-3 weeks regarding the next steps in the hiring process.</p>
 
@@ -165,7 +165,7 @@ def create_application_confirmation_html(application):
             <p style="{styles['p']}">If you have any questions, please don't hesitate to contact our Human Resources department.</p>
 
             <div style="{styles['footer']}">
-                <p style="margin: 5px 0;"><strong>School District 308 Human Resources Team</strong></p>
+                <p style="margin: 5px 0;"><strong>School Demo District Human Resources Team</strong></p>
                 <p style="margin: 5px 0;">This is an automated message, please do not reply to this email.</p>
             </div>
         </div>
@@ -226,7 +226,7 @@ def create_interview_invitation_html(interview):
             <p style="{styles['p']}">We look forward to speaking with you.</p>
 
             <div style="{styles['footer']}">
-                <p style="margin: 5px 0;"><strong>School District 308 HR Team</strong></p>
+                <p style="margin: 5px 0;"><strong>School Demo District HR Team</strong></p>
                 <p style="margin: 5px 0;">This is an automated message, please do not reply to this email.</p>
             </div>
         </div>

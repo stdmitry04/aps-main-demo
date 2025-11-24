@@ -67,7 +67,7 @@ class Command(BaseCommand):
                 'required': False
             },
             {
-                'question': 'Why are you interested in joining School District 308?',
+                'question': 'Why are you interested in joining School Demo District?',
                 'category': 'general',
                 'required': True
             },

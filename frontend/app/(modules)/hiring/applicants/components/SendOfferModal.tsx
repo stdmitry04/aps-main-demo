@@ -230,7 +230,7 @@ function OfferLetterTemplate({
         <div className="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">
           SD
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">School District 308</h1>
+        <h1 className="text-2xl font-bold text-gray-900">School Demo District</h1>
         <p className="text-sm text-gray-600">Human Resources Department</p>
         <p className="text-sm text-gray-600 mt-1">{offerDate}</p>
       </div>
@@ -240,7 +240,7 @@ function OfferLetterTemplate({
         <p className="font-semibold">Dear {applicant.name},</p>
         
         <p>
-          We are pleased to offer you the position of <strong>{applicant.positionTitle}</strong> with School District 308. 
+          We are pleased to offer you the position of <strong>{applicant.positionTitle}</strong> with School Demo District. 
           We were impressed by your qualifications and believe you will be an excellent addition to our team.
         </p>
 
@@ -298,7 +298,7 @@ function OfferLetterTemplate({
           Sincerely,<br />
           <strong>Dr. Jennifer Davis</strong><br />
           Director of Human Resources<br />
-          School District 308
+          School Demo District
         </p>
       </div>
 

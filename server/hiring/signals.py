@@ -28,7 +28,7 @@ def send_application_confirmation(sender, instance, created, **kwargs):
         # Plain text version
         plain_text = f"""Dear {instance.applicant_name},
 
-Thank you for applying for the {instance.position.title} position at School District 308.
+Thank you for applying for the {instance.position.title} position at School Demo District.
 
 We have received your application and will review it carefully. You will hear from us within the next 2-3 weeks regarding the next steps in the hiring process.
 
@@ -42,7 +42,7 @@ Application Details:
 If you have any questions, please don't hesitate to contact our Human Resources department.
 
 Best regards,
-School District 308 Human Resources Team
+School Demo District Human Resources Team
 """
 
         # HTML version with inline CSS
@@ -93,7 +93,7 @@ Please confirm your attendance by replying to this email.
 We look forward to speaking with you.
 
 Best regards,
-School District 308 HR Team
+School Demo District HR Team
 """
 
     # HTML version with inline CSS
@@ -169,7 +169,7 @@ def send_offer_notification(sender, instance, created, **kwargs):
         else:
             plain_message_body = f"""Dear {instance.application.applicant_name},
 
-We are pleased to offer you the position of {instance.application.position.title} with School District 308.
+We are pleased to offer you the position of {instance.application.position.title} with School Demo District.
 
 Position Details:
 - Position Title: {instance.application.position.title}
@@ -189,7 +189,7 @@ Please respond to this offer by {instance.expiration_date.strftime('%B %d, %Y')}
 Sincerely,
 Dr. Jennifer Davis
 Director of Human Resources
-School District 308"""
+School Demo District"""
 
         plain_text = f"""{plain_message_body}
 
@@ -212,7 +212,7 @@ Please respond by {instance.expiration_date.strftime('%B %d, %Y')}.
                 html_content,
                 plain_text,
                 settings.DEFAULT_FROM_EMAIL,
-                [instance.application.applicant_email, "starodu5@gmail.com", "admin@apsdatatechnologies.com"]
+                [instance.application.applicant_email, "starodu5@gmail.com", "demo-admin@example.com"]
             )
             print(f"Offer email sent to: {instance.application.applicant_email}")
         except Exception as e:
@@ -265,7 +265,7 @@ def notify_offer_status_change(sender, instance, created, **kwargs):
 def send_onboarding_notification(sender, instance, created, **kwargs):
     """Send onboarding information to newly hired employee"""
     if created:
-        subject = f'Welcome to School District 308!'
+        subject = f'Welcome to School Demo District!'
         message = f"""
         Dear {instance.application.applicant_name},
 
@@ -284,7 +284,7 @@ def send_onboarding_notification(sender, instance, created, **kwargs):
         We're excited to have you join our team!
 
         Best regards,
-        School District 308 Human Resources Team
+        School Demo District Human Resources Team
         """
 
         try:
