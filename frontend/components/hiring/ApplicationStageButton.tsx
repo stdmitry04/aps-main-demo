@@ -12,11 +12,10 @@
  * The button progresses through these stages:
  * 1. Application Review -> Accept Application (auto-advance)
  * 2. Screening -> Screen Applicant (auto-advance)
- * 3. Interview -> Schedule Interview (callback)
- * 4. Interviews Completed -> Complete Interviews (auto-advance)
- * 5. Reference Check -> Reference Check (auto-advance)
- * 6. Offer -> Send Offer (callback)
- * 7. Offer Accepted -> Send Onboarding (callback)
+ * 3. Interview -> Schedule Interview (callback) -> Send Offer when all interviews completed
+ * 4. Reference Check -> Reference Check (auto-advance)
+ * 5. Offer -> Send Offer (callback)
+ * 6. Offer Accepted -> Send Onboarding (callback)
  */
 
 'use client';
@@ -66,15 +65,28 @@ export function ApplicationStageButton({
     const [isProcessing, setIsProcessing] = React.useState(false);
 
     const stage = application.stage;
+
+    // Check if we're in Interview stage but all interviews are completed
+    // Only show "Send Offer" if there are actual interview stages defined AND completed
+    const hasInterviewStages = application.totalInterviewStages && application.totalInterviewStages > 0;
+    const allInterviewsCompleted = hasInterviewStages &&
+        application.completedInterviewStages >= (application.totalInterviewStages ?? 0);
+
     const stageConfig = STAGE_ACTIONS[stage];
 
     // Debug logging
-    console.log('ApplicationStageButton Debug:', {
+    console.log('🔍 ApplicationStageButton Debug:', {
         applicationId: application.id,
-        stage,
-        stageConfig,
-        availableStages: Object.keys(STAGE_ACTIONS),
-        hasStageConfig: !!stageConfig,
+        applicantName: application.applicantName,
+        stage: application.stage,
+        completedInterviews: application.completedInterviewStages,
+        totalInterviews: application.totalInterviewStages,
+        hasInterviewStages,
+        comparison: `${application.completedInterviewStages} >= ${application.totalInterviewStages}`,
+        allInterviewsCompleted,
+        willShowSendOffer: stage === 'Interview' && allInterviewsCompleted,
+        willShowScheduleInterview: stage === 'Interview' && !allInterviewsCompleted,
+        stageConfig: stageConfig ? { label: stageConfig.label, action: stageConfig.action } : null,
     });
 
     // Handle undefined stageConfig
@@ -126,9 +138,40 @@ export function ApplicationStageButton({
         );
     }
 
+    // Show disabled state when onboarding has been sent
+    if (stage === 'Onboarding') {
+        return (
+            <span className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium bg-gray-100 text-gray-500 cursor-not-allowed opacity-60">
+                <svg
+                    className="w-4 h-4 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                </svg>
+                Onboarding Sent
+            </span>
+        );
+    }
+
     // Determine the click handler based on the stage action
     const handleClick = async () => {
         const action = stageConfig.action;
+
+        // Special case: If in Interview stage and all interviews are completed, show Send Offer
+        if (action === 'schedule_interview' &&
+            allInterviewsCompleted &&
+            (application.totalInterviewStages || 0) > 0 && // Add this check
+            onSendOffer) {
+            onSendOffer(application);
+            return;
+        }
 
         // Callback stages - check these FIRST before auto-advance
         if (action === 'schedule_interview' && onScheduleInterview) {
@@ -142,12 +185,20 @@ export function ApplicationStageButton({
         }
 
         if (action === 'send_onboarding' && onSendOnboarding) {
-            onSendOnboarding(application);
+            try {
+                setIsProcessing(true);
+                await onSendOnboarding(application);
+            } catch (error) {
+                console.error('Error sending onboarding:', error);
+                // Error handling is done in the callback itself
+            } finally {
+                setIsProcessing(false);
+            }
             return;
         }
 
         // Auto-advance stages
-        if (action === 'accept' || action === 'screen' || action === 'complete_interviews' || action === 'reference_check') {
+        if (action === 'accept' || action === 'screen' || action === 'reference_check') {
             try {
                 setIsProcessing(true);
                 await advanceApplicationStage(application.id);
@@ -168,8 +219,14 @@ export function ApplicationStageButton({
     };
 
     const isLoading = isProcessing || loading;
-    const colorClass = colorClasses[stageConfig.color];
-    const iconPath = iconPaths[stageConfig.icon as keyof typeof iconPaths];
+
+    // Override label and color if all interviews are completed
+    const displayLabel = (stage === 'Interview' && allInterviewsCompleted) ? 'Send Offer' : stageConfig.label;
+    const displayColor = (stage === 'Interview' && allInterviewsCompleted) ? 'orange' : stageConfig.color;
+    const displayIcon = (stage === 'Interview' && allInterviewsCompleted) ? 'mail' : stageConfig.icon;
+
+    const colorClass = colorClasses[displayColor];
+    const iconPath = iconPaths[displayIcon as keyof typeof iconPaths];
 
     return (
         <button
@@ -183,7 +240,7 @@ export function ApplicationStageButton({
         ${colorClass}
         ${className}
       `}
-            title={`Current stage: ${stage}. Click to ${stageConfig.label.toLowerCase()}`}
+            title={`Current stage: ${stage}. Click to ${displayLabel.toLowerCase()}`}
         >
             {isLoading ? (
                 <>
@@ -224,7 +281,7 @@ export function ApplicationStageButton({
                             d={iconPath}
                         />
                     </svg>
-                    {stageConfig.label}
+                    {displayLabel}
                 </>
             )}
         </button>

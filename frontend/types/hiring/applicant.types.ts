@@ -65,7 +65,6 @@ export interface Applicant {
     positionReqId: string;
     positionId: string;
     position?: string; // Backend API compatibility - ID of the position
-    currentInterviewStage: number;
     completedInterviewStages: number;
     totalInterviewStages: number;
     department: string;
@@ -73,4 +72,5 @@ export interface Applicant {
     salary: string;
     fte: string;
     startDate: string;
+    interviewAvailability?: InterviewAvailability[];
 }

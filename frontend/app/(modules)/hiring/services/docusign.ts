@@ -125,7 +125,7 @@ class DocuSignService {
       templateId: 'USE_TEMPLATE_FROM_ENV', // Backend will use DOCUSIGN_TEMPLATE_ID from env
       tabs: {
         textTabs: [
-          { tabLabel: 'districtName', value: offerData.districtName || 'School Demo District' },
+          { tabLabel: 'districtName', value: offerData.districtName || 'School District 308' },
           { tabLabel: 'candidateName', value: offerData.candidateName },
           { tabLabel: 'candidateEmail', value: offerData.candidateEmail },
           { tabLabel: 'positionTitle', value: offerData.positionTitle },
@@ -302,7 +302,7 @@ class DocuSignService {
 <body>
   <div class="header">
     <div class="logo">SD</div>
-    <h1>School Demo District</h1>
+    <h1>School District 308</h1>
     <p style="color: #64748b; margin: 5px 0;">Human Resources Department</p>
     <p style="color: #64748b; margin: 5px 0;">${offerDate}</p>
   </div>
@@ -311,7 +311,7 @@ class DocuSignService {
 
   <p>
     We are pleased to offer you the position of <strong>${offerData.positionTitle}</strong>
-    with School Demo District. We were impressed by your qualifications and believe you will
+    with School District 308. We were impressed by your qualifications and believe you will
     be an excellent addition to our team.
   </p>
 
@@ -365,7 +365,7 @@ class DocuSignService {
     Sincerely,<br />
     <strong>Dr. Jennifer Davis</strong><br />
     Director of Human Resources<br />
-    School Demo District
+    School District 308
   </p>
 
   <div class="signature-section">
@@ -388,7 +388,7 @@ class DocuSignService {
 
   <div class="footer">
     <p>
-      School Demo District | Human Resources Department<br />
+      School District 308 | Human Resources Department<br />
       This is a legally binding employment offer. Please retain a copy for your records.
     </p>
   </div>

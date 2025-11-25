@@ -9,7 +9,6 @@ export type ApplicationStage =
     | 'Application Review'
     | 'Screening'
     | 'Interview'
-    | 'Interviews Completed'
     | 'Reference Check'
     | 'Offer'
     | 'Offer Accepted'
@@ -20,7 +19,6 @@ export const STAGE_ORDER: ApplicationStage[] = [
     'Application Review',
     'Screening',
     'Interview',
-    'Interviews Completed',
     'Reference Check',
     'Offer',
     'Offer Accepted',
@@ -30,7 +28,7 @@ export const STAGE_ORDER: ApplicationStage[] = [
 export interface StageAction {
     stage: ApplicationStage;
     label: string;
-    action: 'accept' | 'screen' | 'schedule_interview' | 'complete_interviews' | 'reference_check' | 'send_offer' | 'send_onboarding' | 'onboarding_complete';
+    action: 'accept' | 'screen' | 'schedule_interview' | 'reference_check' | 'send_offer' | 'send_onboarding' | 'onboarding_complete';
     icon: string;
     color: 'blue' | 'green' | 'purple' | 'yellow' | 'orange' | 'teal' | 'indigo';
     nextStage?: ApplicationStage;
@@ -59,15 +57,7 @@ export const STAGE_ACTIONS: Record<ApplicationStage, StageAction> = {
         action: 'schedule_interview',
         icon: 'calendar',
         color: 'purple',
-        nextStage: 'Interviews Completed',
-    },
-    'Interviews Completed': {
-        stage: 'Interviews Completed',
-        label: 'Complete Interviews',
-        action: 'complete_interviews',
-        icon: 'clipboard-check',
-        color: 'indigo',
-        nextStage: 'Reference Check',
+        nextStage: 'Offer',
     },
     'Reference Check': {
         stage: 'Reference Check',
@@ -123,7 +113,6 @@ export interface Application {
     yearsExperience?: number;
     certified: boolean;
     internal: boolean;
-    currentInterviewStage: number;
     completedInterviewStages: number;
     submittedAt: string;
     createdAt: string;

@@ -54,6 +54,10 @@ export interface JobTemplate extends Omit<PositionFormData, 'title' | 'reqId' | 
   id?: string;
   templateName: string;
   interviewStageDetails?: InterviewStageFormData[];
+  description?: string;
+  requirements?: string;
+  screening_questions?: any[];
+  screeningQuestions?: any[];
 }
 
 export interface Position {

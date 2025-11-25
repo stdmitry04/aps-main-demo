@@ -87,9 +87,12 @@ export function useJobApplications(): UseJobApplicationsReturn {
     }
   }, []);
 
+  // Auto-fetch only if no data exists (manual fetch can be called)
   useEffect(() => {
-    fetchApplications();
-  }, [fetchApplications]);
+    if (Array.isArray(applications) && applications.length === 0) {
+      fetchApplications();
+    }
+  }, []);  // Only run once on mount
 
   const fetchApplicationsByPosition = useCallback(
     async (positionId: string): Promise<JobApplication[]> => {

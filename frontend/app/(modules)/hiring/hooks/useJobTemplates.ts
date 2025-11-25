@@ -25,14 +25,23 @@ export function useJobTemplates(): UseJobTemplatesReturn {
     try {
       setLoading(true);
       setError(null);
+      console.log('[useJobTemplates] Fetching templates...');
       const response = await api.get('/hiring/templates/');
-      // Ensure we always set an array, even if the API returns something unexpected
+      // Handle both paginated and non-paginated responses
       const data = response.data;
-      setTemplates(Array.isArray(data) ? data : []);
+      console.log('[useJobTemplates] Received response:', response);
+      console.log('[useJobTemplates] Templates data:', data);
+      console.log('[useJobTemplates] Is array?', Array.isArray(data));
+
+      // Extract templates from paginated response or use array directly
+      const templates = data.results || (Array.isArray(data) ? data : []);
+      console.log('[useJobTemplates] Extracted templates:', templates);
+      console.log('[useJobTemplates] Templates count:', templates.length);
+      setTemplates(templates);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch templates';
       setError(errorMessage);
-      console.error('Error fetching templates:', err);
+      console.error('[useJobTemplates] Error fetching templates:', err);
       // On error, ensure we still have an array
       setTemplates([]);
     } finally {
@@ -67,13 +76,21 @@ export function useJobTemplates(): UseJobTemplatesReturn {
       try {
         setLoading(true);
         setError(null);
+        console.log('[useJobTemplates] Creating template with data:', data);
         const response = await api.post('/hiring/templates/', data);
         const newTemplate = response.data;
-        setTemplates(prev => [...prev, newTemplate]);
+        console.log('[useJobTemplates] Template created successfully:', newTemplate);
+        setTemplates(prev => {
+          const updated = [...prev, newTemplate];
+          console.log('[useJobTemplates] Updated templates list:', updated);
+          console.log('[useJobTemplates] New templates count:', updated.length);
+          return updated;
+        });
         return newTemplate;
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Failed to create template';
         setError(errorMessage);
+        console.error('[useJobTemplates] Error creating template:', err);
         throw err;
       } finally {
         setLoading(false);

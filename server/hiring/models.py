@@ -534,7 +534,7 @@ class Offer(BaseModel):
 
 class HiredEmployee(BaseModel):
     """
-    Track employees hired through the system for Infinite Vision export.
+    Track employees hired through the system for ERP export.
 
     Multi-Tenancy: District-isolated through JobApplication relationship.
     """

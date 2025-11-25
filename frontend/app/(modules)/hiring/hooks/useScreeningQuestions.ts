@@ -24,15 +24,24 @@ export function useScreeningQuestions(): UseScreeningQuestionsReturn {
     try {
       setLoading(true);
       setError(null);
+      console.log('[useScreeningQuestions] Fetching questions with category:', category);
       const params = category ? { category } : {};
       const response = await api.get('/hiring/screening-questions/', { params });
-      // Ensure we always set an array, even if the API returns something unexpected
+      console.log('[useScreeningQuestions] API response:', response);
+      // Handle both paginated and non-paginated responses
       const data = response.data;
-      setQuestions(Array.isArray(data) ? data : []);
+      const questions = data.results || (Array.isArray(data) ? data : []);
+      console.log('[useScreeningQuestions] Data received:', data);
+      console.log('[useScreeningQuestions] Extracted questions:', questions);
+      console.log('[useScreeningQuestions] Number of questions:', questions.length);
+      if (questions.length > 0) {
+        console.log('[useScreeningQuestions] Sample question:', questions[0]);
+      }
+      setQuestions(questions);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch questions';
       setError(errorMessage);
-      console.error('Error fetching questions:', err);
+      console.error('[useScreeningQuestions] Error fetching questions:', err);
       // On error, ensure we still have an array
       setQuestions([]);
     } finally {

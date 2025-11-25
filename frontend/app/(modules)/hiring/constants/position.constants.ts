@@ -1,0 +1,121 @@
+import type { JobTemplate } from "@/types/hiring";
+
+export const primaryJobTitles = [
+  'High School Teacher',
+  'Middle School Teacher',
+  'Elementary Teacher',
+  'Special Education Teacher',
+  'ESL Teacher',
+  'School Counselor',
+  'School Psychologist',
+  'School Social Worker',
+  'School Administrator',
+  'Assistant Principal',
+  'Principal',
+  'Athletic Director',
+  'Instructional Coach',
+  'Librarian',
+  'School Nurse',
+  'Speech Pathologist',
+  'Occupational Therapist',
+  'Physical Therapist',
+  'Paraprofessional',
+  'Support Staff',
+  'Custodian',
+  'Bus Driver',
+  'Food Service'
+];
+
+export const salaryRanges = [
+  '$35,000 - $52,000',
+  '$45,000 - $65,000',
+  '$55,000 - $88,000',
+  '$58,000 - $92,000',
+  '$60,000 - $95,000',
+  '$70,000 - $105,000',
+  '$85,000 - $130,000',
+  '$95,000 - $145,000'
+];
+
+export const initialTemplates: Record<string, JobTemplate> = {
+  'High School Teacher': {
+    templateName: 'High School Teacher',
+    primaryJobTitle: 'High School Teacher',
+    department: 'Science',
+    worksite: 'Central High School',
+    fte: '1.0',
+    salaryRange: '$58,000 - $92,000',
+    probationDate: '',
+    status: 'Draft',
+    employeeCategory: 'Certified Teacher',
+    eeocClassification: '2 - Professionals',
+    workersCompClassification: '8868 - Teachers',
+    leavePlan: 'Teacher - 10 Month',
+    deductionTemplate: 'Teacher - Standard',
+    interviewStages: 2
+  },
+  'Elementary Teacher': {
+    templateName: 'Elementary Teacher',
+    primaryJobTitle: 'Elementary Teacher',
+    department: 'Elementary Education',
+    worksite: 'Lincoln Elementary',
+    fte: '1.0',
+    salaryRange: '$55,000 - $88,000',
+    probationDate: '',
+    status: 'Draft',
+    employeeCategory: 'Certified Teacher',
+    eeocClassification: '2 - Professionals',
+    workersCompClassification: '8868 - Teachers',
+    leavePlan: 'Teacher - 10 Month',
+    deductionTemplate: 'Teacher - Standard',
+    interviewStages: 2
+  },
+  'Special Education Teacher': {
+    templateName: 'Special Education Teacher',
+    primaryJobTitle: 'Special Education Teacher',
+    department: 'Special Education',
+    worksite: '',
+    fte: '1.0',
+    salaryRange: '$60,000 - $95,000',
+    probationDate: '',
+    status: 'Draft',
+    employeeCategory: 'Certified Teacher',
+    eeocClassification: '2 - Professionals',
+    workersCompClassification: '8868 - Teachers',
+    leavePlan: 'Teacher - 10 Month',
+    deductionTemplate: 'Teacher - Standard',
+    interviewStages: 3
+  },
+  'School Administrator': {
+    templateName: 'School Administrator',
+    primaryJobTitle: 'School Administrator',
+    department: 'Administration',
+    worksite: '',
+    fte: '1.0',
+    salaryRange: '$85,000 - $130,000',
+    probationDate: '',
+    status: 'Draft',
+    employeeCategory: 'Administrator',
+    eeocClassification: '1.2 - First/Mid Officials & Managers',
+    workersCompClassification: '8842 - School Administrators',
+    leavePlan: 'Administrator - 12 Month',
+    deductionTemplate: 'Administrator - Standard',
+    interviewStages: 3
+  },
+  'Support Staff': {
+    templateName: 'Support Staff',
+    primaryJobTitle: 'Support Staff',
+    department: '',
+    worksite: '',
+    fte: '1.0',
+    salaryRange: '$35,000 - $52,000',
+    probationDate: '',
+    status: 'Draft',
+    employeeCategory: 'Support Staff',
+    eeocClassification: '5 - Administrative Support',
+    workersCompClassification: '8810 - Clerical Office',
+    leavePlan: 'Support Staff - 10 Days',
+    deductionTemplate: 'Support Staff - Standard',
+    interviewStages: 1
+  }
+};

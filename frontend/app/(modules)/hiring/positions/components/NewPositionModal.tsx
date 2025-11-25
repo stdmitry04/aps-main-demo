@@ -706,9 +706,9 @@ export function NewPositionModal({
                                 </div>
 
                                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                    <h4 className="text-sm font-medium text-blue-900 mb-2">Infinite Vision Export</h4>
+                                    <h4 className="text-sm font-medium text-blue-900 mb-2">ERP System Export</h4>
                                     <p className="text-xs text-blue-700">
-                                        These fields will be automatically exported to Infinite Vision (SchoolERP Pro) when a candidate is hired.
+                                        These fields will be automatically exported to the ERP system when a candidate is hired.
                                     </p>
                                 </div>
                             </div>
@@ -861,7 +861,7 @@ export function NewPositionModal({
                                         <div>
                                             <h4 className="text-sm font-medium text-green-900">Ready to Post</h4>
                                             <p className="text-xs text-green-700 mt-1">
-                                                Once submitted, this position will be created with {formData.interviewStages} interview stage(s), {selectedQuestionIds.length} screening question(s), and can be published to job boards. All required fields for Infinite Vision export are complete.
+                                                Once submitted, this position will be created with {formData.interviewStages} interview stage(s), {selectedQuestionIds.length} screening question(s), and can be published to job boards. All required fields for ERP export are complete.
                                             </p>
                                         </div>
                                     </div>
